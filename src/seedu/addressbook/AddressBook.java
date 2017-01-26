@@ -221,7 +221,6 @@ public class AddressBook {
         if(args.length == 0) {
             setupDefaultFileForStorage();
         }
-        
         loadDataFromStorage();
         while (true) {
             String userCommand = getUserInput(); //also echos user command
@@ -498,11 +497,27 @@ public class AddressBook {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
         for (String[] person : getAllPersonsInAddressBook()) {
             final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-            if (!Collections.disjoint(wordsInName, keywords)) {
+            if (!Collections.disjoint(makeLowerCase(wordsInName), makeLowerCase(keywords))) {
                 matchedPersons.add(person);
             }
         }
         return matchedPersons;
+    }
+    
+    /**
+     * Makes set of Strings lowercase
+     */
+    private static Collection<String> makeLowerCase(Collection<String> words) {
+    	Set<String> lowerCaseWords = new HashSet<String>();
+    	for (String word: words) {
+    		lowerCaseWords.add(word.toLowerCase());
+    	}
+    	
+    	if (lowerCaseWords.isEmpty()) {
+    		return null;
+    	}
+    	
+    	return lowerCaseWords;
     }
 
     /**
